@@ -36,7 +36,7 @@ public class ReservationService {
 
     public Reservation createReservation(Reservation reservationToCreate) {
         if (reservationToCreate.id() != null) {
-            throw new NoSuchElementException("Id should be empty");
+            throw new IllegalArgumentException("Id should be empty");
         }
 
         if (reservationToCreate.status() != null) {
