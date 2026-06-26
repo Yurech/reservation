@@ -1,4 +1,4 @@
-package com.hotel.booking;
+package com.hotel.booking.reservations;
 
 public enum ReservationStatus {
     PENDING,

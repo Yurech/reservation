@@ -1,4 +1,4 @@
-package com.hotel.booking;
+package com.hotel.booking.web;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;

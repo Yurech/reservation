@@ -1,4 +1,4 @@
-package com.hotel.booking;
+package com.hotel.booking.reservations;
 
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/reservation")

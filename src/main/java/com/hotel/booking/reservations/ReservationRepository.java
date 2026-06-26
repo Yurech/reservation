@@ -1,4 +1,4 @@
-package com.hotel.booking;
+package com.hotel.booking.reservations;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
