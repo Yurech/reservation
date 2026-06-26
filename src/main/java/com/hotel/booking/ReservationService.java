@@ -35,12 +35,12 @@ public class ReservationService {
     }
 
     public Reservation createReservation(Reservation reservationToCreate) {
-        if (reservationToCreate.id() != null) {
-            throw new IllegalArgumentException("Id should be empty");
-        }
-
         if (reservationToCreate.status() != null) {
             throw new NoSuchElementException("Status should be empty");
+        }
+
+        if (!reservationToCreate.endDate().isAfter(reservationToCreate.startDate())) {
+            throw new IllegalArgumentException("Start date must be after end date");
         }
 
         var entityToSave = new ReservationEntity(
@@ -64,6 +64,10 @@ public class ReservationService {
             throw new IllegalStateException("Cannot modify reservation, status=" + reservationEntity.getStatus());
         }
 
+        if (!reservationToUpdate.endDate().isAfter(reservationToUpdate.startDate())) {
+            throw new IllegalArgumentException("Start date must be after end date");
+        }
+
         var updatedReservation = new ReservationEntity(
                 reservationEntity.getId(),
                 reservationToUpdate.userId(),
@@ -80,9 +84,17 @@ public class ReservationService {
 
     @Transactional
     public void cancelReservation(Long id) {
-        if (!repository.existsById(id)) {
-            throw new EntityNotFoundException("Not found reservation by id " + id);
+        var reservation = repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Not found reservation by id = " + id));
+
+        if (reservation.getStatus().equals(ReservationStatus.APPROVED)) {
+            throw new IllegalStateException("Cannot cancel approved reservation. Contact with manager please");
         }
+
+        if (reservation.getStatus().equals(ReservationStatus.CANCELLED)) {
+            throw new IllegalStateException("Cannot cancel canceled reservation");
+        }
+
         repository.setStatus(id, ReservationStatus.CANCELLED);
         log.info("Reservation cancelled by reservation id={}", id);
     }
